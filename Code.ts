@@ -22,7 +22,7 @@ function refreshConfig(): void {
 
   alias = new Map();
   for(var address of Object.keys(config['alias'])) {
-    alias.set(config['alias'][address][0], address);
+    alias.set((config['alias'][address][0]).toLowerCase(), address);
   }
 }
 
