@@ -1,6 +1,7 @@
 declare function ImportJSON(url: string, query: string, parseOptions: string) : Array<Array<string>>;
 
 let config = {};
+let alias = {};
 
 /**
  * Convert the configuration from the tab Config into a dictionary of lists of configs.
@@ -15,8 +16,14 @@ function refreshConfig(): void {
       config[row[0]] = {};
     }
     config[row[0]][row[1]] = row.slice(2,10);
-
+    Logger.log(row[0] + "," + row[1] + ", " + row[2]);
   });
+
+
+  for(var address of Object.keys(config['alias'])) {
+    Logger.log(address + ", " + config['alias'][address][0]);
+    alias[config['alias'][address][0]] = address;
+  }
 }
 
 /**
@@ -60,9 +67,43 @@ function importNetworkTransactions(address : string, network : string, index : n
   //   - Addresses alias
 
   // Add network name to the first column
-  for (var element of input) {
-    output.push([network, ...element]);
+  for (var row of input) {
+    let newRow = filterRow(row, network, address);
+    output.push(newRow);
   }    
 
   return output;
 }
+
+const noFilter = (x) => x;
+const dateFilter = (x : string) => { return new Date(parseInt(x) * 1000).toString() };
+
+const filters = [
+  noFilter,
+  dateFilter,
+  noFilter,
+  noFilter,
+  noFilter,
+  aliasFilter,
+  aliasFilter,
+  aliasFilter
+]
+
+
+function filterRow(row: string[], network : string, address : string) {
+
+  for(let i = 0; i < filters.length; i++) {
+    row[i] = filters[i](row[i]);
+  }
+
+  return [network, ...row];
+}
+
+function aliasFilter(address : string) {
+  if (address in alias) {
+    let name = alias[address];
+    address = `${name} (${address})`
+  }
+  return address;
+}
+
