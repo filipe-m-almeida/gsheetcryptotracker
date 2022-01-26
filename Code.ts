@@ -1,11 +1,14 @@
 declare function ImportJSON(url: string, query: string, parseOptions: string) : Array<Array<string>>;
 
 let config = {};
+let alias;
 
 /**
  * Convert the configuration from the tab Config into a dictionary of lists of configs.
  * 
  */
+// TODO(filipe): This function could use a serious cleanup.
+// TODO(filipe): Create a type networks object
 function refreshConfig(): void {
   var sheet = SpreadsheetApp.getActive().getSheetByName("Config");
   var data = sheet.getDataRange().getValues();
@@ -14,9 +17,13 @@ function refreshConfig(): void {
     if (!(row[0] in config)) {
       config[row[0]] = {};
     }
-    config[row[0]][row[1]] = row.slice(2,10);
-
+    config[row[0]][row[1]] = row.slice(2, 10);
   });
+
+  alias = new Map();
+  for(var address of Object.keys(config['alias'])) {
+    alias.set(config['alias'][address][0], address);
+  }
 }
 
 /**
@@ -54,15 +61,38 @@ function importNetworkTransactions(address : string, network : string, index : n
     output.push(["Network", ...header]);
   }
 
-  // TODO(filipe): Add column filters
-  //   - Decode timestamps
-  //   - Links for transactions
-  //   - Addresses alias
-
   // Add network name to the first column
-  for (var element of input) {
-    output.push([network, ...element]);
+  for (var row of input) {
+    let newRow = filterRow(row, network, address);
+    output.push(newRow);
   }    
 
   return output;
+}
+
+const noFilter = (x : string) => x;
+const dateFilter = (x : string) => { return new Date(parseInt(x) * 1000).toString() };
+const aliasFilter = (x : string) => {
+  return alias.has(x) ? `${alias.get(x)} (${x})` : x;
+}
+
+// TODO(filipe): Add a filter to linkify blocks, transactions and addresses. Unclear if this can be done as a function though.
+const filters = [
+  noFilter,    // Blocknumber
+  dateFilter,  // Date
+  noFilter,    // hash
+  noFilter,    // Nonce
+  noFilter,    // Blockhash
+  aliasFilter, // From
+  aliasFilter, // Contact Address
+  aliasFilter  // To
+]
+
+
+function filterRow(row: string[], network : string, address : string) {
+  for(let i = 0; i < filters.length; i++) {
+    row[i] = filters[i](row[i]);
+  }
+
+  return [network, ...row];
 }
