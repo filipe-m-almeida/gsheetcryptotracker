@@ -41,12 +41,13 @@ clasp push
 | network | Fantom             | api.ftmscan.com     | [API KEY] |
 | network | Binance Smart Scan | api.bscscan.com     | [API KEY] |
 | network | Polygon            | api.polygonscan.com | [API KEY] |
+| alias   | My Account         | 0x1234              | .         |
 
 # TODO
 * Template spreadsheet
 * On-click spreadsheet creation using Google Apps API
-* Turn timestamps into redable date and time Google Sheets types.
-* Support address alias that show up in the address and contract cells.
+* *[Done]* Turn timestamps into redable date and time Google Sheets types.
+* *[Done]* Support address alias that show up in the address and contract cells.
 * Address, transaction and block links to etherscan.
 * Api url endpoint defaults for the different supported networks.
 * Alternating row colors clustering transaction ids.
