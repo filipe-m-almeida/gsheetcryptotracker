@@ -43,7 +43,11 @@ function TransactionsERC20(address : string) {
     index++;
   }
 
-  return output;
+  let header = output.shift();
+  output = output
+      .sort((a, b) => parseInt(a[2]) - parseInt(b[2])) // Sort transactions in descending order.
+      .map(x => filterRow( x, address) );              // Apply column filter 
+  return [header , ...output];
 }
 
 function importNetworkTransactions(address : string, network : string, index : number) {
@@ -61,13 +65,10 @@ function importNetworkTransactions(address : string, network : string, index : n
     output.push(["Network", ...header]);
   }
 
-  // Add network name to the first column
-  for (var row of input) {
-    let newRow = filterRow(row, network, address);
-    output.push(newRow);
-  }    
+  Logger.log(`Processing network : ${network}, entries: ${output.length}`);
 
-  return output;
+  return input
+      .map(x => [network, ...x]); // Add Network as the first column.
 }
 
 const noFilter = (x : string) => x;
@@ -78,6 +79,7 @@ const aliasFilter = (x : string) => {
 
 // TODO(filipe): Add a filter to linkify blocks, transactions and addresses. Unclear if this can be done as a function though.
 const filters = [
+  noFilter,     // Network
   noFilter,    // Blocknumber
   dateFilter,  // Date
   noFilter,    // hash
@@ -89,10 +91,10 @@ const filters = [
 ]
 
 
-function filterRow(row: string[], network : string, address : string) {
+function filterRow(row: string[], address : string) : string[] {
   for(let i = 0; i < filters.length; i++) {
     row[i] = filters[i](row[i]);
   }
 
-  return [network, ...row];
+  return row;
 }
