@@ -34,19 +34,19 @@ clasp push
 * Go to `Settings -> Calculation -> Recalculation` and change the update frequenecy to hourly or every minute.
 
 ## Example Config tab settings
-|         |                    |                     |           |
-| ------- | ------------------ |---------------------|---------- |
-| network | Ethereum           | api.etherscan.io    | [API KEY] |
-| network | Avalanche          | api.snowtrace.io    | [API KEY] |
-| network | Fantom             | api.ftmscan.com     | [API KEY] |
-| network | Binance Smart Scan | api.bscscan.com     | [API KEY] |
-| network | Polygon            | api.polygonscan.com | [API KEY] |
-| alias   | My Account         | 0x1234              | .         |
+|         |                     |                     |           |
+| ------- | ------------------  |---------------------|---------- |
+| network | Ethereum            | api.etherscan.io    | [API KEY] |
+| network | Avalanche           | api.snowtrace.io    | [API KEY] |
+| network | Fantom              | api.ftmscan.com     | [API KEY] |
+| network | Binance Smart Chain | api.bscscan.com     | [API KEY] |
+| network | Polygon             | api.polygonscan.com | [API KEY] |
+| alias   | My Account          | 0x1234              | .         |
 
 # TODO
 * Template spreadsheet
-* On-click spreadsheet creation using Google Apps API
-* *[Done]* Turn timestamps into redable date and time Google Sheets types.
+* One-click spreadsheet creation using Google Apps API
+* *[Done]* Turn timestamps into readable date and time Google Sheets types.
 * *[Done]* Support address alias that show up in the address and contract cells.
 * Address, transaction and block links to etherscan.
 * Api url endpoint defaults for the different supported networks.
