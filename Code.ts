@@ -59,16 +59,16 @@ function importNetworkTransactions(address : string, network : string, index : n
   var header: Array<string> = input.shift();
   var output: Array<Array<string>> = [];
 
-
   // TODO(filipe): Find a better way here. A little hacky in order to only output the header once.
   if (index == 0) {
     output.push(["Network", ...header]);
   }
 
-  Logger.log(`Processing network : ${network}, entries: ${output.length}`);
+  for (let e of input) {
+    output.push([network, ...e]);
+  }
 
-  return input
-      .map(x => [network, ...x]); // Add Network as the first column.
+  return output;
 }
 
 const noFilter = (x : string) => x;
