@@ -27,7 +27,7 @@ clasp push
 
 * Deploy the script to a Google Sheet you own
 * Create a Config tab
- * Add the networks you want to support alongside your API keys
+ * Add the networks you want to support alongside your API keys as shown in [Example Config tab settings](#example-config-tab-settings)
  * use `=ImportERC20(address)` in a cell. It will import all your transactions
 
 ## Optional
