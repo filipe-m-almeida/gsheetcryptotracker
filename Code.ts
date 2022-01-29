@@ -43,7 +43,11 @@ function TransactionsERC20(address : string) {
     index++;
   }
 
-  return output;
+  let header = output.shift();
+  output = output
+      .sort((a, b) => parseInt(a[2]) - parseInt(b[2])) // Sort transactions in descending order.
+      .map(x => filterRow( x, address) );              // Apply column filter 
+  return [header , ...output];
 }
 
 function importNetworkTransactions(address : string, network : string, index : number) {
@@ -55,17 +59,14 @@ function importNetworkTransactions(address : string, network : string, index : n
   var header: Array<string> = input.shift();
   var output: Array<Array<string>> = [];
 
-
   // TODO(filipe): Find a better way here. A little hacky in order to only output the header once.
   if (index == 0) {
     output.push(["Network", ...header]);
   }
 
-  // Add network name to the first column
-  for (var row of input) {
-    let newRow = filterRow(row, network, address);
-    output.push(newRow);
-  }    
+  for (let e of input) {
+    output.push([network, ...e]);
+  }
 
   return output;
 }
@@ -78,6 +79,7 @@ const aliasFilter = (x : string) => {
 
 // TODO(filipe): Add a filter to linkify blocks, transactions and addresses. Unclear if this can be done as a function though.
 const filters = [
+  noFilter,     // Network
   noFilter,    // Blocknumber
   dateFilter,  // Date
   noFilter,    // hash
@@ -89,10 +91,10 @@ const filters = [
 ]
 
 
-function filterRow(row: string[], network : string, address : string) {
+function filterRow(row: string[], address : string) : string[] {
   for(let i = 0; i < filters.length; i++) {
     row[i] = filters[i](row[i]);
   }
 
-  return [network, ...row];
+  return row;
 }
