@@ -28,20 +28,21 @@ clasp push
 * Deploy the script to a Google Sheet you own
 * Create a Config tab
  * Add the networks you want to support alongside your API keys as shown in [Example Config tab settings](#example-config-tab-settings)
- * use `=ImportERC20(address)` in a cell. It will import all your transactions
+ * use `=ImportERC20(address, Config!C1)` in a cell. It will import all your transactions
 
 ## Optional
 * Go to `Settings -> Calculation -> Recalculation` and change the update frequenecy to hourly or every minute.
 
 ## Example Config tab settings
-|         |                     |                     |           |
-| ------- | ------------------  |---------------------|---------- |
-| network | Ethereum            | api.etherscan.io    | [API KEY] |
-| network | Avalanche           | api.snowtrace.io    | [API KEY] |
-| network | Fantom              | api.ftmscan.com     | [API KEY] |
-| network | Binance Smart Chain | api.bscscan.com     | [API KEY] |
-| network | Polygon             | api.polygonscan.com | [API KEY] |
-| alias   | My Account          | 0x1234              | .         |
+|            |                     |                     |           |
+| ---------- | ------------------  |---------------------|---------- |
+| checkpoint | time                |                     |           |
+| network    | Ethereum            | api.etherscan.io    | [API KEY] |
+| network    | Avalanche           | api.snowtrace.io    | [API KEY] |
+| network    | Fantom              | api.ftmscan.com     | [API KEY] |
+| network    | Binance Smart Chain | api.bscscan.com     | [API KEY] |
+| network    | Polygon             | api.polygonscan.com | [API KEY] |
+| alias      | My Account          | 0x1234              | .         |
 
 # TODO
 * Template spreadsheet

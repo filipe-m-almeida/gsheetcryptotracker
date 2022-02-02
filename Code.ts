@@ -98,3 +98,16 @@ function filterRow(row: string[], address : string) : string[] {
 
   return row;
 }
+
+function onTimer() {
+  var sheet = SpreadsheetApp.getActive().getSheetByName("Config");
+  var data = sheet.getDataRange();
+
+  for (let i = 1; i < data.getLastRow(); i++) {
+    let key1 = data.getCell(i, 1).getValue();
+    let key2 = data.getCell(i, 2).getValue();
+    if (key1 == "checkpoint" && key2 == "time") {
+      let cell = data.getCell(i,3).setValue(Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd HH:mm:ss"));
+    }
+  }
+}
