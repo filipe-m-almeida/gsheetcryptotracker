@@ -36,7 +36,7 @@ function TransactionsERC20(address : string) {
 
   // Return if no address, so TransactionsERC20("") can be used as a template
   if (address == "") {
-    return "";
+    return "[Action Required] Add an address to this cell's function.";
   }
 
   refreshConfig();
