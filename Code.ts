@@ -33,6 +33,12 @@ function refreshConfig(): void {
  * @returns 
  */
 function TransactionsERC20(address : string) {
+
+  // Return if no address, so TransactionsERC20("") can be used as a template
+  if (address == "") {
+    return "";
+  }
+
   refreshConfig();
 
   var output: Array<Array<string>> = [];
