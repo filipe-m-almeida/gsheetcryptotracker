@@ -2,7 +2,7 @@
 
 Implements a set of functions in Google Apps Script that import and sync blockchains transactions into Google Sheets.
 
-Everyblock chain is supported as long as there is an etherscan API for it.
+Every EVM blockchain is supported as long as there is an etherscan API for it.
 
 ## Usage
 
