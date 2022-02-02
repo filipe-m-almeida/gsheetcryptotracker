@@ -4,6 +4,15 @@ Implements a set of functions in Google Apps Script that import and sync blockch
 
 Everyblock chain is supported as long as there is an etherscan API for it.
 
+## Usage
+
+* Make a copy of the following the [gsheetcryptotracker Template](https://docs.google.com/spreadsheets/d/1Nu8P490bvQqJdzAN5BoKuY3UySY-eqRuKybsaQvkTXY)
+* Add API keys to the Config tab
+* On the Transactions tab, add your blockchain address to the function in the first cell: `=ImportERC20(address, Config!C1)`
+* Optionally
+ * Add address aliases
+ * Setup a timer that calls onTimer() so you have the transactions refreshed regularly.
+
 ## Requirements
 
 * [Clasp](https://developers.google.com/apps-script/guides/clasp)
@@ -22,15 +31,6 @@ clasp login
 clasp clone [script id]
 clasp push
 ```
-
-## Usage
-
-* Make a copy of the following the [gsheetcryptotracker Template](https://docs.google.com/spreadsheets/d/1Nu8P490bvQqJdzAN5BoKuY3UySY-eqRuKybsaQvkTXY)
-* Add API keys to the Config tab
-* On the first tab add your blockchain address to the function in the first cell: `=ImportERC20(address, Config!C1)`
-* Optionally
- * Add address aliases
- * Setup a timer that calls onTimer() so you have the transactions refreshed regularly.
 
 ## Example Config tab settings
 |            |                     |                     |           |
