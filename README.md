@@ -25,13 +25,12 @@ clasp push
 
 ## Usage
 
-* Deploy the script to a Google Sheet you own
-* Create a Config tab
- * Add the networks you want to support alongside your API keys as shown in [Example Config tab settings](#example-config-tab-settings)
- * use `=ImportERC20(address, Config!C1)` in a cell. It will import all your transactions
-
-## Optional
-* Go to `Settings -> Calculation -> Recalculation` and change the update frequenecy to hourly or every minute.
+* Make a copy of the following the [gsheetcryptotracker Template](https://docs.google.com/spreadsheets/d/1Nu8P490bvQqJdzAN5BoKuY3UySY-eqRuKybsaQvkTXY)
+* Add API keys to the Config tab
+* On the first tab add your blockchain address to the function in the first cell: `=ImportERC20(address, Config!C1)`
+* Optionally
+ * Add address aliases
+ * Setup a timer that calls onTimer() so you have the transactions refreshed regularly.
 
 ## Example Config tab settings
 |            |                     |                     |           |
@@ -47,12 +46,12 @@ clasp push
 # TODO
 * Template spreadsheet
 * One-click spreadsheet creation using Google Apps API
-* *[Done]* Turn timestamps into readable date and time Google Sheets types.
-* *[Done]* Support address alias that show up in the address and contract cells.
 * Address, transaction and block links to etherscan.
 * Api url endpoint defaults for the different supported networks.
 * Alternating row colors clustering transaction ids.
 * Highlight main account address cells in bold.
+* *[Done]* Turn timestamps into readable date and time Google Sheets types.
+* *[Done]* Support address alias that show up in the address and contract cells.
 
 # Author
 Filipe Almeida <filipe.almeida@gmail.com>
