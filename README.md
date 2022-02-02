@@ -44,7 +44,6 @@ clasp push
 | alias      | My Account          | 0x1234              | .         |
 
 # TODO
-* Template spreadsheet
 * One-click spreadsheet creation using Google Apps API
 * Address, transaction and block links to etherscan.
 * Api url endpoint defaults for the different supported networks.
@@ -52,6 +51,7 @@ clasp push
 * Highlight main account address cells in bold.
 * *[Done]* Turn timestamps into readable date and time Google Sheets types.
 * *[Done]* Support address alias that show up in the address and contract cells.
+* *[Done]* Template spreadsheet
 
 # Author
 Filipe Almeida <filipe.almeida@gmail.com>
