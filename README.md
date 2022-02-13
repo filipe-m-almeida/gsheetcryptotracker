@@ -8,7 +8,7 @@ Every EVM blockchain is supported as long as there is an etherscan API for it.
 
 * Make a copy of the following the [gsheetcryptotracker Template](https://docs.google.com/spreadsheets/d/1Nu8P490bvQqJdzAN5BoKuY3UySY-eqRuKybsaQvkTXY)
 * Add API keys to the Config tab
-* On the Transactions tab, add your blockchain address to the function in the first cell: `=ImportERC20(address, TimeStamp)`
+* On the Transactions tab, add your blockchain address to the function in the first cell: `=TransactionsERC20(address, TimeStamp)`
 * Optionally
  * Add address aliases
  * Setup a timer that calls onTimer() so you have the transactions refreshed regularly.
