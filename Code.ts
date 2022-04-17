@@ -49,11 +49,12 @@ function TransactionsERC20(address : string) {
     index++;
   }
 
-  let header = output.shift();
+  let header = renameHeaders(output.shift());
+
   output = output
-      .sort((a, b) => parseInt(a[2]) - parseInt(b[2])) // Sort transactions in descending order.
+      .sort((a, b) => rowOrder(a, b, Field.TimeStamp)) // Sort transactions in descending order.
       .map(x => filterRow( x, address) );              // Apply column filter 
-  return [header , ...output];
+  return [header , ...output].map(filterOutputFields);
 }
 
 function importNetworkTransactions(address : string, network : string, index : number) {
@@ -77,32 +78,116 @@ function importNetworkTransactions(address : string, network : string, index : n
   return output;
 }
 
-const noFilter = (x : string) => x;
+type FilterType = (value: string, index: number, row: string[]) => string
+
 const dateFilter = (x : string) => { return new Date(parseInt(x) * 1000).toString() };
 const aliasFilter = (x : string) => {
   return alias.has(x) ? `${alias.get(x)} (${x})` : x;
 }
+const valueFilter = (x: string, i: number, row: string[]) => String(Number(x) / Math.pow(10, Number(row[Field.TokenDecimal])))
+const gasPriceFilter = (x: string, i: number, row: string[]) => String(Number(x) / Math.pow(10, GweiDecimals))
 
-// TODO(filipe): Add a filter to linkify blocks, transactions and addresses. Unclear if this can be done as a function though.
-const filters = [
-  noFilter,     // Network
-  noFilter,    // Blocknumber
-  dateFilter,  // Date
-  noFilter,    // hash
-  noFilter,    // Nonce
-  noFilter,    // Blockhash
-  aliasFilter, // From
-  aliasFilter, // Contact Address
-  aliasFilter  // To
+/**
+ * Field index of all returns etherscan.io fields.
+ */
+enum Field {
+  Network,
+  BlockNumber,
+  TimeStamp,
+  Hash,
+  Nonce,
+  BlockHash,
+  From,
+  Contract,
+  To,
+  Value,
+  TokenName,
+  TokenSymbol,
+  TokenDecimal,
+  TransactionIndex,
+  Gas,
+  GasPrice,
+  GasUsed,
+  CumulativeGasUsed,
+  Input,
+  Confirmations
+}
+
+const OutputFields: number[] = [
+  Field.Network,
+  Field.BlockNumber,
+  Field.TimeStamp,
+  Field.Hash,
+  Field.From,
+  Field.Contract,
+  Field.To,
+  Field.Value,
+  Field.TokenSymbol,
+  Field.GasPrice,
+  Field.GasUsed
 ]
 
+const Filter = new Map<Field, FilterType>([
+  [Field.TimeStamp, dateFilter],
+  [Field.From, aliasFilter],
+  [Field.Contract, aliasFilter],
+  [Field.To, aliasFilter],
+  [Field.Value, valueFilter],
+  [Field.GasPrice, gasPriceFilter]
+]);
 
+const HeaderMap = new Map<string, string>([
+  ["Blocknumber", "Block"],
+  ["Contractaddress", "Contract"],
+  ["Tokensymbol", "Token"],
+  ["Gasprice", "Gas Price"],
+  ["Gasused", "Gas"]
+]);
+
+const GweiDecimals : number = 9;
+
+// TODO(filipe): Should move to processing the etherscan.io json instead of the ImportJSON processed table.
 function filterRow(row: string[], address : string) : string[] {
-  for(let i = 0; i < filters.length; i++) {
-    row[i] = filters[i](row[i]);
-  }
+  return row.map((value, index, row) => {
+    return Filter.has(index)
+      ? Filter.get(index)(value, index, row)
+      : value;
+  });
+}
 
-  return row;
+/**
+ * Return a a row with only the ordered fields present in {@link OutputFields}
+ * 
+ * @param row input row
+ * @returns filtered and ordered row
+ */
+function filterOutputFields(row: string[]) : string[] {
+  let result = [];
+  for(let col of OutputFields) {
+    result.push(row[col]);
+  }
+  return result;
+}
+
+function renameHeaders(headers: string[]) {
+  return headers.map(h => {
+    return HeaderMap.has(h)
+      ? HeaderMap.get(h)
+      : h;
+  });
+}
+
+/**
+ * Order function between two array.
+ * 
+ * Returns the numeric order between to arrays. This function is meant to be used with array.sort().
+ * 
+ * @param a first array
+ * @param b  second array
+ * @param field field to be used in ordered
+ */
+function rowOrder(a: string[], b: string[], field: Field) {
+  return parseInt(a[field]) - parseInt(b[field]);
 }
 
 function onTimer() {
